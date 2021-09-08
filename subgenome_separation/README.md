@@ -67,10 +67,10 @@ ls 01_splittingTheGenome
 # done < 01_splittingTheGenome/chromosome.ids.tsv # We close the loop, and provide guidance to the file it should be looping over.
 ```
 
-# Kmer counting
+#### Kmer counting
 srun --ntasks=1 --mem-per-cpu=30G --time=02:00:00 --qos=devel --account=nn9408k --pty bash -i
 ml Jellyfish/2.3.0-GCC-9.3.0
 
-# This one takes ~5 minutes. Grab a coffee
+### This one takes ~5 minutes. Grab a coffee
 
 for i in 01_splittingTheGenome/*fa; do echo $i; newname=$(echo ${i#*/} | sed "s/\.fa/.jf/"); jellyfish count -m 13 -s 100M -o 02_jellyfish_counting/$newname -t 1 $i; done
