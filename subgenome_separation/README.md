@@ -68,6 +68,7 @@ ls 01_splittingTheGenome
 ```
 
 ###  Kmer counting (02)
+**Remember that for your own genomes you may want to try different K-mer sizes. I used 13 since there was a lot of divergence (k-mer 25 gave no results) **
 ```
 # Okay, before we get down to business, we do not want to ruin the cluster. The Norwegian cluster has log-in nodes (where you log-in) and executing nodes (to execute jobs). We will be transfering to the executing nodes for the next steps since we will need computational power.
 
@@ -108,7 +109,14 @@ less 02_jellyfish_counting/*jf
 
 ###  Kmer dumping (03)
 ```
+# Let's retrieve some human-readable (also R-readable) data from jellyfish using its "dump" function.
 for i in 02_jellyfish_counting/*jf; do echo $i; jellyfish dump -c -L 100 $i > 03_jellyfish_dumping/${i#*/}.dumps.larger100.col; done
+
+# loop explained:
+# for i in 02_jellyfish_counting/*jf; do - we open the loop 
+# echo $i; - print to the screen
+# jellyfish dump -c -L 100 $i > 03_jellyfish_dumping/${i#*/}.dumps.larger100.col; - dump to the 03 folder, specifying column format (-c) and only k-mers with more than 100 (-L). We want k-mers with big representations so we catch "fossile TEs". I'll explain this below.
+# done - closing the loop
 
 # inspect the files with less
 less 03_jellyfish_dumping/*
