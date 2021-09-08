@@ -35,5 +35,35 @@ mkdir 00_genome 01_splittingTheGenome 02_jellyfish_counting 03_jellyfish_dumping
 # 00 - One folder just for the genome
 # 01 - Another where we split the chromosomes into different files (so we run jellyfish in parallel and without issues)
 # 02 - Another where we save the k-mer counting of jellyfish
-# 03 - Finally, where we dump the information :)
+# 03 - Finally, where we dump information to plot on R
+```
+
+Now, we get a copy of the data (00)
+```
+# Copy the genome to where you are
+cp /cluster/projects/nn9458k/oh_know/teachers/jose/scalesia_downscaled.fa ./00_genome/
+
+# Take a brief look at it
+less -S 00_genome/scalesia_downscaled.fa
+
+# You see, we have ScDrF4C_12 (chr12), ScDrF4C_18 (chr 18), and so on
+```
+
+Then, we separate fasta files for each chromosome (01)
+```
+# Let's just get a chr-id file so we can use a while loop
+grep ">" 00_genome/scalesia_downscaled.fa | sed "s/>//"  > 01_splittingTheGenome/chromosome.ids.tsv
+less 01_splittingTheGenome/chromosome.ids.tsv
+
+# and make a loop which works chr-by-chr to separate files (loop explained below)
+while read chr; do echo "Working on $chr" ; grep --no-group-separator -A 1 "$chr" 00_genome/scalesia_downscaled.fa > 01_splittingTheGenome/$chr.fa; done < 01_splittingTheGenome/chromosome.ids.tsv
+
+ls 01_splittingTheGenome
+# See? We created a fasta (.fa) file for each chromosome. This was done with the loop.
+# Here is the loop dissected
+# while read chr; do  - This line opens a while loop (a slow, but useful type of loop that will go line-by-line on a file we provide (provided in the last line)
+# echo "Working on $chr" - This line just prints to our screen so we can follow the progress
+# grep --no-group-separator -A 1 "$chr" 00_genome/scalesia_downscaled.fa > 01_splittingTheGenome/$chr.fa - This line searches for the variable chr, which was defined in the while loop (grep). Then, it saves that line and the line just below (-A 1) into a new file called $chr.fa
+# done < 01_splittingTheGenome/chromosome.ids.tsv # We close the loop, and provide guidance to the file it should be looping over.
+
 ```
