@@ -1,6 +1,6 @@
 ## Let's separate some subgenomes!
 
-Here is some pertinent literature:
+While my paper is in prep, here is some pertinent literature:
 [Genome evolution in the allotetraploid frog Xenopus laevis](https://www.nature.com/articles/nature19840), and 
 [Genome biology of the paleotetraploid perennial biomass crop Miscanthus](https://www.nature.com/articles/s41467-020-18923-6).
 
@@ -122,4 +122,93 @@ for i in 02_jellyfish_counting/*jf; do echo $i; jellyfish dump -c -L 100 $i > 03
 
 # inspect the files with less
 less 03_jellyfish_dumping/*
+```
+
+### Moving to your own computer
+```
+# Open a terminal on your own computer. Navigate to a folder where you want to operate (this I can't decide for you). Notice you need to change your username below.
+scp _YOURUSERNAME_@saga.sigma2.no:/cluster/work/users/_YOURUSERNAME_/subgenomeSeparation/03_jellyfish_dumping/*col 
+```
+
+### Now we plot things in R
+
+**_Open R studio_**
+
+```
+getwd()
+setwd("/Users/josepc/Desktop/tmp/kmers") # Navigate to the folder where you have the col data.
+
+install.packages("tidyverse") # Only needed if you don't have it already
+library(tidyverse) # Load up your library
+
+
+##### PAIR 01
+s12<-read.table("./ScDrF4C_12.jf.dumps.larger100.col",sep="\t", header=T) %>%
+  rename(s12=frequency)
+s25<-read.table("./ScDrF4C_25.jf.dumps.larger100.col",sep="\t",header=T) %>%
+  rename(s25=frequency)
+
+# This code will object a variable called s12 and s25 based on the files (ScDrF4C_12.jf.dumps.larger100.col")). We specify it is separated by tabs , and header is true. The weird symbol (%>%) is a pipe (|) provided by tidyverse, and then we rename the column
+
+pair01<-full_join(s12, s25, by="kmer")
+head(pair01)
+
+# We merge both datasets on an object called pair01
+
+filtered_pair01<- pair01 %>% filter(s12 > 2*s25 | s25 > 2*s12)
+nrow(filtered_pair01)
+
+# We filter for k-mers that are either twice-represented on a member of the pair. E.g.:
+# where s12 = 10, and s25 = 30 (keep)
+# where s12 = 10, and s25 = 12 (remove)
+# where s12 = 500, and s25 = 201 (keep)
+# where s12 = 600, and s25 = 1004 (remove)
+
+# Same for each pair
+
+##### PAIR 02
+s8<-read.table("./ScDrF4C_8.jf.dumps.larger100.col",sep="\t", header=T) %>%
+  rename(s8=frequency)
+s18<-read.table("./ScDrF4C_18.jf.dumps.larger100.col",sep="\t",header=T) %>%
+  rename(s18=frequency)
+
+pair02<-full_join(s8, s18, by="kmer")
+head(pair02)
+
+filtered_pair02<- pair02 %>% filter(s8 > 2*s18 | s18 > 2*s8)
+nrow(filtered_pair02)
+
+##### PAIR 03
+s6<-read.table("./ScDrF4C_6.jf.dumps.larger100.col",sep="\t", header=T) %>%
+  rename(s6=frequency)
+s7<-read.table("./ScDrF4C_7.jf.dumps.larger100.col",sep="\t",header=T) %>%
+  rename(s7=frequency)
+
+pair03<-full_join(s6, s7, by="kmer")
+head(pair03)
+
+filtered_pair03<- pair03 %>% filter(s7 > 2*s6 | s6 > 2*s7)
+nrow(filtered_pair03)
+
+
+
+
+####
+
+df<-full_join(filtered_pair01, filtered_pair02, by="kmer") %>%
+  full_join(filtered_pair03, by="kmer")
+
+par(mfrow=c(1,1))
+
+cleaned_df<-df[complete.cases(df), ]
+
+rownames(cleaned_df)<-cleaned_df$kmer
+
+squeaky_cleaned_df<-cleaned_df[,-1]
+
+transversed_squeaky_cleaned_df<-t(squeaky_cleaned_df)
+
+dist_transversed_squeaky_cleaned_df <- dist(transversed_squeaky_cleaned_df)
+hclust_avg <- hclust(dist_transversed_squeaky_cleaned_df)
+plot(hclust_avg, main="13bp kmers at least 100x per chromossome, no NA; scalesia")
 ```
