@@ -164,7 +164,7 @@ nrow(filtered_pair01)
 # where s12 = 500, and s25 = 201 (keep)
 # where s12 = 600, and s25 = 1004 (remove)
 
-# Same for each pair
+# Same for other pairs
 
 ##### PAIR 02
 s8<-read.table("./ScDrF4C_8.jf.dumps.larger100.col",sep="\t", header=T) %>%
@@ -191,24 +191,34 @@ filtered_pair03<- pair03 %>% filter(s7 > 2*s6 | s6 > 2*s7)
 nrow(filtered_pair03)
 
 
-
-
-####
+##########
+# Now we merge all the filtered pair objects
 
 df<-full_join(filtered_pair01, filtered_pair02, by="kmer") %>%
   full_join(filtered_pair03, by="kmer")
 
+# and prepare for plotting
 par(mfrow=c(1,1))
 
+# It is my experience that it is best to remove missing data. You may want to try this (or skip it) with your data)
 cleaned_df<-df[complete.cases(df), ]
 
+# We add names to the rownames ...
 rownames(cleaned_df)<-cleaned_df$kmer
 
+# and clean the last column
 squeaky_cleaned_df<-cleaned_df[,-1]
 
+# We transverse it (so we do a hierarchical clustering)
 transversed_squeaky_cleaned_df<-t(squeaky_cleaned_df)
 
+# We calculate distances, and make a hierarchical clustering and plot it.
 dist_transversed_squeaky_cleaned_df <- dist(transversed_squeaky_cleaned_df)
 hclust_avg <- hclust(dist_transversed_squeaky_cleaned_df)
-plot(hclust_avg, main="13bp kmers at least 100x per chromossome, no NA; scalesia")
+plot(hclust_avg, main="13bp kmers at least 100x per chromossome, no missing data; scalesia")
+
+# See the two separate groups? They're subgenomes.
 ```
+
+### Rational
+I'll explain this on the class and drop the YouTube here as soon as it is available.
