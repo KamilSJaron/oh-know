@@ -10,7 +10,7 @@ First, you get a chromosome-resolved genome. Second, you use UCEs (ultra-conserv
 
 Unfortunately I will not be covering steps 1 and two from above. I will be explaining how to do step number 2 in my lecture, and **_I will be happy to provide code by e-mail_**. In any case, I will record this lecture and host it on YouTube.
 
-## Our example
+## So, what is on the menu for today?
 
 We will be working with a subset of the **_Scalesia atractyloides_** genome, where we have subgenome A and B. We have a chr-resolved assembly (step 1), and we know the pairs (step 2):
 pair_01: chr25 pairs with chr12
@@ -21,7 +21,18 @@ This is a simplified example since the assembly has 17 pairs of chromosomes (32 
 
 ## Let's get down to business
 
+Let's organize and clean our space.
 ```
 # First, we move to our working area:
 cd $USERWORK
+
+# Then, create a folder, and move inside:
+mkdir subgenomeSeparation; cd subgenomeSeparation/
+
+# I personally like to label folders numerically. Why? It's easier to follow, and once you finish a whole set of analyses and come back to it a few months later, you're able to remember the order. Let's make four folders:
+mkdir 00_genome 01_splittingTheGenome 02_jellyfish_counting 03_jellyfish_dumping
+# 00 - One folder just for the genome
+# 01 - Another where we split the chromosomes into different files (so we run jellyfish in parallel and without issues)
+# 02 - Another where we save the k-mer counting of jellyfish
+# 03 - Finally, where we dump the information :)
 ```
