@@ -68,7 +68,9 @@ ls 01_splittingTheGenome
 ```
 
 ###  Kmer counting (02)
-**Remember that for your own genomes you may want to try different K-mer sizes. I used 13 since there was a lot of divergence (k-mer 25 gave no results) **
+
+**_Remember that for your own genomes you may want to try different K-mer sizes. I used 13 since there was a lot of divergence (k-mer 25 gave no results)_**
+
 ```
 # Okay, before we get down to business, we do not want to ruin the cluster. The Norwegian cluster has log-in nodes (where you log-in) and executing nodes (to execute jobs). We will be transfering to the executing nodes for the next steps since we will need computational power.
 
