@@ -8,13 +8,20 @@ Here is some pertinent literature:
 The whole pipeline would look like this:
 First, you get a chromosome-resolved genome. Second, you use UCEs (ultra-conserved elements) to obtain chromosome pairs. Third, you assign one chromosome from each pair to either subgenome (e.g. A / B).
 
-Unfortunately I will not be covering steps 1 and two from above. I will be explaining how to do step number 2 in my lecture, and **I will be happy to provide code by e-mail**. In any case, I will record this lecture and host it on YouTube.
+Unfortunately I will not be covering steps 1 and two from above. I will be explaining how to do step number 2 in my lecture, and **_I will be happy to provide code by e-mail_**. In any case, I will record this lecture and host it on YouTube.
 
 ## Our example
 
-In a case where we have subgenome A and B, we know the following:
-pair01: subgenome A: chr25; subgenome B: chr12
-pair02: A: chr6; B: chr7
-pair03: A: chr18; B: chr8
+We will be working with a subset of the **_Scalesia atractyloides_** genome, where we have subgenome A and B. We have a chr-resolved assembly (step 1), and we know the pairs (step 2):
+pair_01: chr25 pairs with chr12
+pair_02: chr6 pairs with chr7
+pair_03: chr18 pairs with chr8
 
-This is a simplified example. During the lecture (which I'll be hosting after recording it) I will explain how I went from 
+This is a simplified example since the assembly has 17 pairs of chromosomes (32 in total).
+
+## Let's get down to business
+
+```
+# First, we move to our working area:
+cd $USERWORK
+```
