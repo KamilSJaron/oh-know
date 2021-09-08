@@ -105,3 +105,11 @@ ls 02_jellyfish_counting/
 less 02_jellyfish_counting/*jf
 
 ```
+
+###  Kmer dumping (03)
+```
+for i in 02_jellyfish_counting/*jf; do echo $i; jellyfish dump -c -L 100 $i > 03_jellyfish_dumping/${i#*/}.dumps.larger100.col; done
+
+# inspect the files with less
+less 03_jellyfish_dumping/*
+```
