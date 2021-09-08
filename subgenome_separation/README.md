@@ -31,6 +31,7 @@ mkdir subgenomeSeparation; cd subgenomeSeparation/
 
 # I personally like to label folders numerically. Why? It's easier to follow, and once you finish a whole set of analyses and come back to it a few months later, you're able to remember the order. Let's make four folders:
 mkdir 00_genome 01_splittingTheGenome 02_jellyfish_counting 03_jellyfish_dumping
+
 # 00 - One folder just for the genome
 # 01 - Another where we split the chromosomes into different files (so we run jellyfish in parallel and without issues)
 # 02 - Another where we save the k-mer counting of jellyfish
