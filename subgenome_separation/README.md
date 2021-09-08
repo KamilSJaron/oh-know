@@ -8,7 +8,7 @@ Here is some pertinent literature:
 The whole pipeline would look like this:
 First, you get a chromosome-resolved genome. Second, you use UCEs (ultra-conserved elements) to obtain chromosome pairs. Third, you assign one chromosome from each pair to either subgenome (e.g. A / B).
 
-Unfortunately I will not be covering steps 1 and two from above. I will be explaining how to do step number 2 in my lecture, and *I will be happy to provide code by e-mail*. In any case, I will record this lecture and host it on YouTube.
+Unfortunately I will not be covering steps 1 and two from above. I will be explaining how to do step number 2 in my lecture, and **I will be happy to provide code by e-mail**. In any case, I will record this lecture and host it on YouTube.
 
 ## Our example
 
