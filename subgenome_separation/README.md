@@ -65,5 +65,12 @@ ls 01_splittingTheGenome
 # echo "Working on $chr" - This line just prints to our screen so we can follow the progress
 # grep --no-group-separator -A 1 "$chr" 00_genome/scalesia_downscaled.fa > 01_splittingTheGenome/$chr.fa - This line searches for the variable chr, which was defined in the while loop (grep). Then, it saves that line and the line just below (-A 1) into a new file called $chr.fa
 # done < 01_splittingTheGenome/chromosome.ids.tsv # We close the loop, and provide guidance to the file it should be looping over.
-
 ```
+
+# Kmer counting
+srun --ntasks=1 --mem-per-cpu=30G --time=02:00:00 --qos=devel --account=nn9408k --pty bash -i
+ml Jellyfish/2.3.0-GCC-9.3.0
+
+# This one takes ~5 minutes. Grab a coffee
+
+for i in 01_splittingTheGenome/*fa; do echo $i; newname=$(echo ${i#*/} | sed "s/\.fa/.jf/"); jellyfish count -m 13 -s 100M -o 02_jellyfish_counting/$newname -t 1 $i; done
